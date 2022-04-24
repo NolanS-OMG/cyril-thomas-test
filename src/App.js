@@ -1,4 +1,3 @@
-import './App.css';
 import JobPoster from './JobPoster';
 
 function App() {
