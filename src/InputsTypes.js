@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const UsualInput = ({type, placeholder, valueFunc, jobKey}) => {
+const UsualInput = ({type, placeholder, valueFunc, jobKey, required}) => {
 
   const [inputValue, setInputValue] = useState('');
 
@@ -14,14 +14,16 @@ const UsualInput = ({type, placeholder, valueFunc, jobKey}) => {
       placeholder = {placeholder}
       onChange={(e) => {setInputValue(e.target.value)}}
       value = {inputValue}
+      required = {required ? required : false}
     />
   )
 }
 
-const ListInput = ({type, placeholder, doNotSubmit, doSubmit, valueFunc, jobKey}) => {
+const ListInput = ({type, placeholder, doNotSubmit, doSubmit, valueFunc, jobKey, required}) => {
 
   const [inputValue, setInputValue] = useState('');
   const [inputList, setInputList] = useState([]);
+  const [isRequired, setIsRequired] = useState(required ? required : false);
 
   let showInputs = inputList.map( (input, index) => { return ( <li key={`${index+1}: ${input}`}>{`${index+1}: ${input}`}</li> ) } )
 
@@ -32,6 +34,8 @@ const ListInput = ({type, placeholder, doNotSubmit, doSubmit, valueFunc, jobKey}
       setInputList(newList);
       valueFunc(jobKey, newList);
     }
+    setInputValue('');
+    setIsRequired(false);
   }
 
   return (
@@ -46,6 +50,7 @@ const ListInput = ({type, placeholder, doNotSubmit, doSubmit, valueFunc, jobKey}
         } }}
         onFocus={() => doNotSubmit()}
         onBlur={() => doSubmit()}
+        required = {isRequired}
       />
       <ul>{showInputs}</ul>
     </div>

@@ -1,18 +1,36 @@
 import { useState } from "react";
+import axios from 'axios';
 
-import {ListInput, UsualInput, MinMaxInputs} from "./InputsTypes.js"
+import {ListInput, UsualInput, MinMaxInputs} from "./InputsTypes.js";
 
 const JobPoster = () => {
+
+  const postForm = (data) => {
+    axios.post(
+      "/v1jobs/job", data
+      ).then(
+        res => console.log(res)
+        ).catch(
+          err => console.log(err)
+          );
+  }
 
   const submit = (event) => {
     event.preventDefault();
     if (canSubmit) {
-      console.log(job);
+      let postJob = {...job}
+      if (job.yearsOfExperience.min === 0 && job.yearsOfExperience.max === undefined) {
+        postJob.yearsOfExperience = 'No experience needed'
+      }
+      if (job.graduatingYear.min === 1910 && job.graduatingYear.max === undefined) {
+        postJob.graduatingYear = 'No educatione needed'
+      }
+      postForm(postJob);
     }
   }
 
   const updateForm = (str,value) => {
-    let newJob = job;
+    let newJob = {...job};
     newJob[str] = value;
     setJob(newJob);
   }
@@ -62,7 +80,8 @@ const JobPoster = () => {
           type='text' 
           placeholder='Write a title that appropriately describes the job' 
           valueFunc = {updateForm} 
-          jobKey='title' 
+          jobKey='title'
+          required = {true}
         />
       </div>
       <div>
@@ -74,6 +93,7 @@ const JobPoster = () => {
           doSubmit={canSubmitTrue}
           valueFunc = {updateForm} 
           jobKey='locations'
+          required = {true}
         />
       </div>
       <MinMaxInputs 
@@ -89,7 +109,7 @@ const JobPoster = () => {
           type='text' 
           placeholder='Describe the role and responsabilities, skills required for the job and help candidates understand their role better' 
           valueFunc = {updateForm} 
-          jobKey='jobDescription' 
+          jobKey='jobDescription'
         />
       </div>
       <h4>Targeting</h4>
