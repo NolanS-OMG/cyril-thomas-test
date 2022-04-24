@@ -23,6 +23,8 @@ const ListInput = ({type, placeholder, doNotSubmit, doSubmit, valueFunc, jobKey}
   const [inputValue, setInputValue] = useState('');
   const [inputList, setInputList] = useState([]);
 
+  let showInputs = inputList.map( (input, index) => { return ( <li key={`${index+1}: ${input}`}>{`${index+1}: ${input}`}</li> ) } )
+
   const addValueToList = () => {
     let newList = [...inputList];
     newList.push(inputValue);
@@ -33,17 +35,20 @@ const ListInput = ({type, placeholder, doNotSubmit, doSubmit, valueFunc, jobKey}
   }
 
   return (
-    <input
-      type={type}
-      placeholder={placeholder}
-      value = {inputValue}
-      onChange={(e) => {setInputValue(e.target.value)}}
-      onKeyDown = {(e) => { if (e.key === 'Enter') {
-        addValueToList();
-      } }}
-      onFocus={() => doNotSubmit()}
-      onBlur={() => doSubmit()}
-    />
+    <div>
+      <input
+        type={type}
+        placeholder={placeholder}
+        value = {inputValue}
+        onChange={(e) => {setInputValue(e.target.value)}}
+        onKeyDown = {(e) => { if (e.key === 'Enter') {
+          addValueToList();
+        } }}
+        onFocus={() => doNotSubmit()}
+        onBlur={() => doSubmit()}
+      />
+      <ul>{showInputs}</ul>
+    </div>
   )
 }
 

@@ -17,14 +17,6 @@ const JobPoster = () => {
     setJob(newJob);
   }
 
-  const canSubmitTrue = () => {
-    canSubmit = true;
-  }
-
-  const canSubmitFalse = () => {
-    canSubmit = false;
-  }
-
   const [job, setJob] = useState(
     {
       title: '',
@@ -52,6 +44,14 @@ const JobPoster = () => {
   )
 
   let canSubmit = true;
+
+  const canSubmitTrue = () => {
+    canSubmit = true;
+  }
+
+  const canSubmitFalse = () => {
+    canSubmit = false;
+  }
 
   return (
     <form onSubmit={submit}>
