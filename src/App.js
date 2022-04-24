@@ -5,7 +5,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path={'/'} element={<JobPoster/>}/>
+        <Route exact path={'/'} element={<div><h1>Post your job</h1><JobPoster/></div>}/>
       </Routes>
     </Router>
   );

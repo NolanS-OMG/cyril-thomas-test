@@ -5,6 +5,30 @@ import {ListInput, UsualInput, MinMaxInputs} from "./InputsTypes.js";
 
 const JobPoster = () => {
 
+  const defaultJob = {
+    title: '',
+
+    locations: [],
+
+    yearsOfExperience: {
+      min: 0,
+      max: undefined
+    },
+
+    jobDescription: '',
+
+    categories: [],
+
+    functionalAreas: [],
+
+    graduatingYear: {
+      min: 1910,
+      max: undefined
+    },
+
+    tags: []
+  }
+
   const postForm = (data) => {
     axios.post(
       "/v1jobs/job", data
@@ -15,7 +39,7 @@ const JobPoster = () => {
           );
   }
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     if (canSubmit) {
       let postJob = {...job}
@@ -26,6 +50,7 @@ const JobPoster = () => {
         postJob.graduatingYear = 'No educatione needed'
       }
       postForm(postJob);
+      window.location.reload();
     }
   }
 
@@ -35,31 +60,7 @@ const JobPoster = () => {
     setJob(newJob);
   }
 
-  const [job, setJob] = useState(
-    {
-      title: '',
-
-      locations: [],
-
-      yearsOfExperience: {
-        min: 0,
-        max: undefined
-      },
-
-      jobDescription: '',
-
-      categories: [],
-
-      functionalAreas: [],
-
-      graduatingYear: {
-        min: 1910,
-        max: undefined
-      },
-
-      tags: []
-    }
-  )
+  const [job, setJob] = useState({...defaultJob});
 
   let canSubmit = true;
 
@@ -72,7 +73,7 @@ const JobPoster = () => {
   }
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} id='post-job'>
       <h4>Basic Details</h4>
       <div>
         <label>Job title: </label>
