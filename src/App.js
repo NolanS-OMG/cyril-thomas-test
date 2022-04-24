@@ -3,7 +3,10 @@ import JobPoster from './JobPoster';
 
 function App() {
   return (
-    <JobPoster/>
+    <div>
+      <h1>oli</h1>
+      <JobPoster/>
+    </div>
   );
 }
 
