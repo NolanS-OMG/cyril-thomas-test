@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 
 const JobPoster = () => {
 
-  const {register, handelSubmit} = useForm()
+  const {register, handleSubmit} = useForm()
 
   const [job, setJob] = useState({})
 
@@ -16,8 +16,8 @@ const JobPoster = () => {
   }
 
   return (
-    <form onSubmit={handelSubmit( onSubmit )}>
-      <h4>Basic details</h4>
+    <form onSubmit={handleSubmit( onSubmit )}>
+      <h4>Basic Details</h4>
       <label>Job: </label>
       <input {...register('student', {required: true} ) }/>
       <h4>Targeting</h4>
