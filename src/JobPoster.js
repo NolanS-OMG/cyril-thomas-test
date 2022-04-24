@@ -35,7 +35,7 @@ const JobPoster = () => {
       functionalAreas: [],
 
       graduatingYear: {
-        min: 0,
+        min: 1910,
         max: undefined
       },
 
@@ -76,7 +76,13 @@ const JobPoster = () => {
           jobKey='locations'
         />
       </div>
-      <MinMaxInputs title='Yearse of experience' min={0}/>
+      <MinMaxInputs 
+        title='Years of experience' 
+        min={0}
+        placeholder='year'
+        valueFunc = {updateForm} 
+        jobKey='yearsOfExperience'
+      />
       <div>
         <label>Job description: </label>
         <UsualInput 
@@ -109,15 +115,22 @@ const JobPoster = () => {
           jobKey='functionalAreas'
         />
       </div>
-      <MinMaxInputs title='Graduationg year' min={1910} max={2050}/>
+      <MinMaxInputs 
+        title='Graduating year' 
+        min={1910}
+        max={2050}
+        placeholder='batch'
+        valueFunc = {updateForm} 
+        jobKey='graduatingYear'
+      />
       <div>
         <label>Tags: </label>
-        <ListInput 
-          type='text' 
-          placeholder='Press enter to add each categorie' 
+        <ListInput
+          type='text'
+          placeholder='Press enter to add each category'
           doNotSubmit={canSubmitFalse}
           doSubmit={canSubmitTrue}
-          valueFunc = {updateForm} 
+          valueFunc = {updateForm}
           jobKey='tags'
         />
       </div>
