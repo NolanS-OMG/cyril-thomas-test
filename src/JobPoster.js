@@ -1,33 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import {ListInput, UsualInput, MinMaxInputs, TextAreaInput} from "./InputsTypes.js";
 
 const JobPoster = () => {
-
-  const defaultJob = {
-    title: '',
-
-    locations: [],
-
-    yearsOfExperience: {
-      min: 0,
-      max: undefined
-    },
-
-    jobDescription: '',
-
-    categories: [],
-
-    functionalAreas: [],
-
-    graduatingYear: {
-      min: 1910,
-      max: undefined
-    },
-
-    tags: []
-  }
 
   const postForm = (data) => {
     axios.post(
@@ -41,6 +18,7 @@ const JobPoster = () => {
 
   const postJob = () => {
     submit();
+    navigate('/thanks');
   }
   const postJobAndAddAnother = () => {
     submit();
@@ -86,9 +64,35 @@ const JobPoster = () => {
     }
   }
 
-  const [job, setJob] = useState({...defaultJob});
+  const defaultJob = {
+    title: '',
+
+    locations: [],
+
+    yearsOfExperience: {
+      min: 0,
+      max: undefined
+    },
+
+    jobDescription: '',
+
+    categories: [],
+
+    functionalAreas: [],
+
+    graduatingYear: {
+      min: 1910,
+      max: undefined
+    },
+
+    tags: []
+  }
 
   const requiredJobField = ['title', 'locations', 'categories', 'tags'];
+
+  const [job, setJob] = useState({...defaultJob});
+
+  const navigate = useNavigate();
 
   return (
     <form>
@@ -167,7 +171,7 @@ const JobPoster = () => {
         jobKey='tags'
       />
       <div>
-        <button type="button" onClick={submit}>Post job</button>
+        <button type="button" onClick={postJob}>Post job</button>
         <button type="button" onClick={postJobAndAddAnother}>Post job and add another one</button>
         <button type="button" onClick={cancel}>Cancel</button>
       </div>
