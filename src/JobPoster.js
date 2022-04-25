@@ -42,8 +42,7 @@ const JobPoster = () => {
       }
     }
     if (canSubmit === requiredJobField.length) {
-      //postForm(postJob);
-      console.log(job);
+      postForm(postJob);
     } else {
       checkMissingField(requiredJobField[missingField-1]);
     }
