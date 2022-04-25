@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
 
-import {ListInput, UsualInput, MinMaxInputs} from "./InputsTypes.js";
+import {ListInput, UsualInput, MinMaxInputs, TextAreaInput} from "./InputsTypes.js";
 
 const JobPoster = () => {
 
@@ -39,64 +39,71 @@ const JobPoster = () => {
           );
   }
 
+  const postJob = () => {}
+  const postJobAndAddAnother = () => {}
+  const cancel = () => {}
+
   const submit = async (event) => {
     event.preventDefault();
-    if (canSubmit) {
-      let postJob = {...job}
-      if (job.yearsOfExperience.min === 0 && job.yearsOfExperience.max === undefined) {
-        postJob.yearsOfExperience = 'No experience needed'
+    let missingField = 0;
+    let canSubmit = 1;
+    for (let i = 0; i < requiredJobField.length; i++) {
+      if (typeof job[requiredJobField[i]] === typeof '' || typeof job[requiredJobField[i]] === typeof []) {
+        if (job[requiredJobField[i]].length > 0) {
+          canSubmit++;
+        } else {
+          missingField = i+1;
+          break;
+        }
       }
-      if (job.graduatingYear.min === 1910 && job.graduatingYear.max === undefined) {
-        postJob.graduatingYear = 'No educatione needed'
-      }
-      postForm(postJob);
-      window.location.reload();
     }
+    if (canSubmit === requiredJobField.length) {
+      //postForm(postJob);
+      console.log(job);
+    } else {
+      checkMissingField(requiredJobField[missingField-1]);
+    }
+  }
+
+  const checkMissingField = (missingField) => {
+    let element = document.getElementById(missingField);
+    element.classList.add('missing-field');
+    window.scrollTo(0,element.offsetTop-5);
   }
 
   const updateForm = (str,value) => {
     let newJob = {...job};
     newJob[str] = value;
     setJob(newJob);
+    if (document.getElementById(str).classList.contains('missing-field')) {
+      document.getElementById(str).classList.remove('missing-field');
+    }
   }
 
   const [job, setJob] = useState({...defaultJob});
 
-  let canSubmit = true;
-
-  const canSubmitTrue = () => {
-    canSubmit = true;
-  }
-
-  const canSubmitFalse = () => {
-    canSubmit = false;
-  }
+  const requiredJobField = ['title', 'locations', 'categories', 'tags'];
 
   return (
-    <form onSubmit={submit} id='post-job'>
+    <form>
       <h4>Basic Details</h4>
-      <div>
-        <label>Job title: </label>
+      <div id='title' className="required">
+        <label><b>*</b>Job title: </label>
         <UsualInput 
           type='text' 
           placeholder='Write a title that appropriately describes the job' 
           valueFunc = {updateForm} 
           jobKey='title'
-          required = {true}
         />
       </div>
-      <div>
-        <label>Locations: </label>
-        <ListInput 
-          type='text' 
-          placeholder='Press enter to add each location' 
-          doNotSubmit={canSubmitFalse}
-          doSubmit={canSubmitTrue}
-          valueFunc = {updateForm} 
-          jobKey='locations'
-          required = {true}
-        />
-      </div>
+      <ListInput
+        className="required"
+        title='Locations' 
+        type='text'
+        placeholder='Press enter to add each category'
+        valueFunc = {updateForm}
+        jobKey='locations'
+      />
       <MinMaxInputs 
         title='Years of experience' 
         min={0}
@@ -104,38 +111,31 @@ const JobPoster = () => {
         valueFunc = {updateForm} 
         jobKey='yearsOfExperience'
       />
-      <div>
-        <label>Job description: </label>
-        <UsualInput 
+      <div id = 'jobDescription'>
+        <label><b>*</b>Job description: </label>
+        <TextAreaInput
           type='text' 
           placeholder='Describe the role and responsabilities, skills required for the job and help candidates understand their role better' 
           valueFunc = {updateForm} 
           jobKey='jobDescription'
-        />
+        ></TextAreaInput>
       </div>
       <h4>Targeting</h4>
-      <div>
-        <label>Categories: </label>
-        <ListInput 
-          type='text' 
-          placeholder='Press enter to add each categorie' 
-          doNotSubmit={canSubmitFalse}
-          doSubmit={canSubmitTrue}
-          valueFunc = {updateForm} 
-          jobKey='categories'
-        />
-      </div>
-      <div>
-        <label>Functional area: </label>
-        <ListInput 
-          type='text' 
-          placeholder='Press enter to add each categorie' 
-          doNotSubmit={canSubmitFalse}
-          doSubmit={canSubmitTrue}
-          valueFunc = {updateForm} 
-          jobKey='functionalAreas'
-        />
-      </div>
+      <ListInput
+        className="required"
+        title='Categories' 
+        type='text'
+        placeholder='Press enter to add each category'
+        valueFunc = {updateForm}
+        jobKey='categories'
+      />
+      <ListInput
+        title='Functional area' 
+        type='text'
+        placeholder='Press enter to add each category'
+        valueFunc = {updateForm}
+        jobKey='functionalAreas'
+      />
       <MinMaxInputs 
         title='Graduating year' 
         min={1910}
@@ -144,18 +144,19 @@ const JobPoster = () => {
         valueFunc = {updateForm} 
         jobKey='graduatingYear'
       />
+      <ListInput
+        className="required"
+        title='Tags' 
+        type='text'
+        placeholder='Press enter to add each category'
+        valueFunc = {updateForm}
+        jobKey='tags'
+      />
       <div>
-        <label>Tags: </label>
-        <ListInput
-          type='text'
-          placeholder='Press enter to add each category'
-          doNotSubmit={canSubmitFalse}
-          doSubmit={canSubmitTrue}
-          valueFunc = {updateForm}
-          jobKey='tags'
-        />
+        <button type="button" onClick={submit}>Post job</button>
+        <button type="button">Post job and add another one</button>
+        <button type="button">Cancel</button>
       </div>
-      <button type="submit">Post job</button>
     </form>
   )
 }

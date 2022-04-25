@@ -1,5 +1,7 @@
+import './index.css';
+
 import JobPoster from './JobPoster';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
