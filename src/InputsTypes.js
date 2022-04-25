@@ -1,34 +1,30 @@
 import { useState } from "react";
 
-const UsualInput = ({type, placeholder, valueFunc, jobKey}) => {
-
-  const [inputValue, setInputValue] = useState('');
-
+const UsualInput = ({type, placeholder, valueFunc, value, jobKey}) => {
   return (
     <div>
       <input
         type = {type}
         placeholder = {placeholder}
         onChange={(e) => {
-          setInputValue(e.target.value);
-          valueFunc(jobKey, inputValue);
+          valueFunc(jobKey, e.target.value);
         }}
-        value = {inputValue}
+        value = {value}
     />
     </div>
   )
 }
 
-const ListInput = ({className, title, type, placeholder, valueFunc, jobKey}) => {
+const ListInput = ({className, title, type, placeholder, valueFunc, value, jobKey}) => {
 
   const [inputValue, setInputValue] = useState('');
-  const [inputList, setInputList] = useState([]);
 
-  let showInputs = inputList.map( (input, index) => { return ( 
+  let showInputs = value.map( (input, index) => { return ( 
     <li key={`jobkey: ${index}`}>
       <span>{input}</span>
       <span onClick={() => {
-        inputList.splice(index,1);
+        value.splice(index,1);
+        valueFunc(jobKey, value);
       }}>
         <b>x</b>
       </span>
@@ -36,10 +32,9 @@ const ListInput = ({className, title, type, placeholder, valueFunc, jobKey}) => 
   ) } )
 
   const addValueToList = () => {
-    let newList = [...inputList];
+    let newList = [...value];
     newList.push(inputValue);
-    if ( inputList.findIndex(element => element === inputValue) === -1 ) {
-      setInputList(newList);
+    if ( value.findIndex(element => element === inputValue) === -1 ) {
       valueFunc(jobKey, newList);
     }
     setInputValue('');
@@ -64,11 +59,7 @@ const ListInput = ({className, title, type, placeholder, valueFunc, jobKey}) => 
   )
 }
 
-const MinMaxInputs = ({title, min, max, placeholder, valueFunc, jobKey}) => {
-
-  const [minValue, setMinValue] = useState(min);
-  const [maxValue, setMaxValue] = useState(undefined);
-
+const MinMaxInputs = ({title, min, max, placeholder, valueFunc, value, jobKey}) => {
   return(
     <div id={jobKey}>
       <label><b>*</b>{title + ': '}</label>
@@ -79,10 +70,9 @@ const MinMaxInputs = ({title, min, max, placeholder, valueFunc, jobKey}) => {
           min={min}
           max={max}
           onChange = {(e) => {
-            setMinValue(e.target.value);
             valueFunc( jobKey, {
-              min: minValue,
-              max: maxValue
+              min: e.target.value,
+              max: value.max
             } );
           }}
         />
@@ -92,10 +82,9 @@ const MinMaxInputs = ({title, min, max, placeholder, valueFunc, jobKey}) => {
           min={min}
           max={max}
           onChange = {(e) => {
-            setMaxValue(e.target.value);
             valueFunc( jobKey, {
-              min: minValue,
-              max: maxValue
+              min: value.min,
+              max: e.target.value
             } );
           }}
         />
@@ -104,20 +93,16 @@ const MinMaxInputs = ({title, min, max, placeholder, valueFunc, jobKey}) => {
   )
 }
 
-const TextAreaInput = ({type, placeholder, valueFunc, jobKey}) => {
-
-  const [inputValue, setInputValue] = useState('');
-
+const TextAreaInput = ({type, placeholder, valueFunc, value, jobKey}) => {
   return (
     <div id={jobKey}>
       <textarea 
         type = {type}
         placeholder = {placeholder}
         onChange={(e) => {
-          setInputValue(e.target.value);
-          valueFunc(jobKey, inputValue);
+          valueFunc(jobKey, e.target.value);
         }}
-        value = {inputValue}
+        value = {value}
       ></textarea>
     </div>
   )

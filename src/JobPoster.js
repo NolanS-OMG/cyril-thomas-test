@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
 
 import {ListInput, UsualInput, MinMaxInputs, TextAreaInput} from "./InputsTypes.js";
@@ -39,14 +39,20 @@ const JobPoster = () => {
           );
   }
 
-  const postJob = () => {}
-  const postJobAndAddAnother = () => {}
-  const cancel = () => {}
+  const postJob = () => {
+    submit();
+  }
+  const postJobAndAddAnother = () => {
+    submit();
+    cancel();
+  }
+  const cancel = () => {
+    setJob({...defaultJob});
+  }
 
-  const submit = async (event) => {
-    event.preventDefault();
+  const submit = () => {
     let missingField = 0;
-    let canSubmit = 1;
+    let canSubmit = 0;
     for (let i = 0; i < requiredJobField.length; i++) {
       if (typeof job[requiredJobField[i]] === typeof '' || typeof job[requiredJobField[i]] === typeof []) {
         if (job[requiredJobField[i]].length > 0) {
@@ -93,6 +99,7 @@ const JobPoster = () => {
           type='text' 
           placeholder='Write a title that appropriately describes the job' 
           valueFunc = {updateForm} 
+          value = {job.title}
           jobKey='title'
         />
       </div>
@@ -102,13 +109,15 @@ const JobPoster = () => {
         type='text'
         placeholder='Press enter to add each category'
         valueFunc = {updateForm}
+        value = {job.locations}
         jobKey='locations'
       />
       <MinMaxInputs 
-        title='Years of experience' 
+        title='Years of experience'
         min={0}
         placeholder='year'
         valueFunc = {updateForm} 
+        value = {job.graduatingYear}
         jobKey='yearsOfExperience'
       />
       <div id = 'jobDescription'>
@@ -117,6 +126,7 @@ const JobPoster = () => {
           type='text' 
           placeholder='Describe the role and responsabilities, skills required for the job and help candidates understand their role better' 
           valueFunc = {updateForm} 
+          value = {job.jobDescription}
           jobKey='jobDescription'
         ></TextAreaInput>
       </div>
@@ -127,6 +137,7 @@ const JobPoster = () => {
         type='text'
         placeholder='Press enter to add each category'
         valueFunc = {updateForm}
+        value = {job.categories}
         jobKey='categories'
       />
       <ListInput
@@ -134,6 +145,7 @@ const JobPoster = () => {
         type='text'
         placeholder='Press enter to add each category'
         valueFunc = {updateForm}
+        value = {job.functionalAreas}
         jobKey='functionalAreas'
       />
       <MinMaxInputs 
@@ -142,6 +154,7 @@ const JobPoster = () => {
         max={2050}
         placeholder='batch'
         valueFunc = {updateForm} 
+        value = {job.graduatingYear}
         jobKey='graduatingYear'
       />
       <ListInput
@@ -150,12 +163,13 @@ const JobPoster = () => {
         type='text'
         placeholder='Press enter to add each category'
         valueFunc = {updateForm}
+        value = {job.tags}
         jobKey='tags'
       />
       <div>
         <button type="button" onClick={submit}>Post job</button>
-        <button type="button">Post job and add another one</button>
-        <button type="button">Cancel</button>
+        <button type="button" onClick={postJobAndAddAnother}>Post job and add another one</button>
+        <button type="button" onClick={cancel}>Cancel</button>
       </div>
     </form>
   )

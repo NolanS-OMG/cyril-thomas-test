@@ -12,6 +12,7 @@
 }
 
 b {
+  display: none;
   color: transparent;
 }
 
@@ -84,6 +85,7 @@ li > span:nth-child(2) {
 }
 
 li > span:nth-child(2) > b {
+  display: inline;
   color: #fff;
   margin: auto;
   font-size: 0.675rem;
@@ -163,5 +165,6 @@ form > div:nth-child(11) button:nth-child(3):hover {
 }
 
 .required b {
+  display: inline;
   color: red;
 }
